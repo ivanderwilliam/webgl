@@ -1,1 +1,3 @@
-# WebGL Repo: A collection of some WebGL demos and tests
+# WebGL Repo
+
+A collection of WebGL studies and demos.
