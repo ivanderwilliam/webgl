@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Cube - Transformations</title>
+		<script type="text/javascript" src="../Common/MV.js"></script>
+		<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+		<script type="text/javascript" src="../Common/initShaders.js"></script>
+		<script type="text/javascript" src="ObjectClass.js"></script>
+		<script type="text/javascript" src="cubeTransform.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<canvas id="canvas" width="800" height="480"></canvas><br>
+			
+		<table align="center">
+			<tr> <!-- header row -->
+				<th>Camera and Projection</th>
+				<th>Cube Properties</th>
+				<th>Extra Axis</th>
+			</tr>
+			<tr> <!-- 1st row -->
+				<td>
+					<label><b>Projection Mode:</b></label><br><br>
+					<input type="radio" name="projection" id="ortho-mode" value="ortho">Orthographic
+					<input type="radio" name="projection" id="persp-mode" value="persp" checked>Perspective<hr>
+					<input type="checkbox" id="rotate-global-y"></input>
+					<label><b>Rotate Over Global Y</b></label><br><br>
+					<label>Rotation Speed</label><br>
+					<input id="rot-speed" type="range" value="1.0" step="0.1" min="-3.0" max="3.0" oninput="changeCamRotationSpeed(this.value)"><hr>
+					<label><b>Animation</b></label><br><br>
+					<button align="center" id="play-pause" title="Commands don't apply in Pause mode" style="font-weight:bold">Pause</button>
+				</td>
+				<td>
+					<label><b>Cube Rotation</b></label><br>
+					<input type="checkbox" id="rotate-over-x">X</input>    
+					<input type="checkbox" id="rotate-over-y">Y</input>    
+					<input type="checkbox" id="rotate-over-z">Z</input><hr>
+
+					<label><b>Cube Translation (x, y, z)</b></label><br>
+					<input type="range" value="0" step="0.1" min="-10" max="10" oninput="translateCube(0, this.value)"><br>
+					<input type="range" value="0" step="0.1" min="-10" max="10" oninput="translateCube(1, this.value)"><br>
+					<input type="range" value="0" step="0.1" min="-10" max="10" oninput="translateCube(2, this.value)"><hr>
+
+					<label><b>Cube Scale</b></label><br>
+					<input type="range" value="1.0" step="0.1" min="0.1" max="2" oninput="scaleCube(this.value)"><br>
+				</td>
+				<td>
+					<input type="checkbox" id="render-extraAxis" onchange="renderExtraAxis()">Use Extra Axis</input><hr>
+					<label><b>Rotate Axis</b></label><br><br>
+					<label>&theta;&#9;</label><button class="angleChange" onclick="updateTheta(1)">-</button><button class="angleChange" onclick="updateTheta(-1)">+</button>
+					<label>&phi;&#9;</label><button class="angleChange" onclick="updatePhi(-1)">-</button><button class="angleChange" onclick="updatePhi(1)">+</button><hr>
+					<input type="checkbox" id="extra-axis-rotation" onchange="toggleExtraAxisRotation(this.checked)" disabled>Rotate Cube around Axis</input><br>
+					<label><i>(Uncheck to change the angles)</i></label>
+				</td>
+			</tr>
+			<tr> <!-- 2nd row -->			
+			</tr>
+		</table><br>
+
+		<center><div class="boxed">
+		<b>Note:</b><br>
+		<ol>
+		<li><p>You can't rotate the cube while using the extra axis.</p></li>
+		<li><p>You can't change the extra axis angles (&theta;&#9; and &phi;&#9;) while it's rotating.</p></li>
+		</ol>
+		</div><center>
+
+		<script id="vertex-shader" type="x-shader/x-vertex">
+			uniform mat4 u_scale;
+			uniform mat4 u_rotation;
+			uniform mat4 u_translation;
+			uniform mat4 u_modelView;
+			uniform mat4 u_projection;
+
+			attribute vec4 a_position;
+			attribute vec4 vColor;
+
+			varying vec4 fColor;
+ 
+			void main()
+			{
+				gl_Position = u_projection * u_modelView * u_translation * u_rotation * u_scale * a_position;
+  				fColor = vColor;
+  			}
+		</script>
+		
+		<script id="fragment-shader" type="x-shader/x-fragment">
+			precision mediump float;
+
+			varying vec4 fColor;
+
+			void main()
+			{
+ 				gl_FragColor = fColor;	
+			}
+		</script>
+	</body>
