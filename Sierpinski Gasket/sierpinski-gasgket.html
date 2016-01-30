@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+<title>2D Sierpinski Gasket</title>
+
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+attribute vec4 vPosition;
+uniform float theta;
+
+void main()
+{
+	vec4 newPosition = vPosition;
+
+	float x = newPosition.x;
+	float y = newPosition.y;
+	float d = sqrt(x*x + y*y); // Offset from origin
+
+	newPosition.x = x * cos(d*theta) - y * sin(d*theta);
+	newPosition.y = x * sin(d*theta) + y * cos(d*theta);
+
+    gl_Position = newPosition;
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+precision mediump float;
+
+uniform vec4 a_color;
+
+void
+main()
+{
+    gl_FragColor = a_color;
+}
+</script>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="sierpinski-gasket.js"></script>
+</head>   
+
+<body>
+<canvas id="gl-canvas" width="800" height="600">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+<br><br>
+
+<form>
+	Settings: <br>
+	<!--Subdivisions: <input id="text-subdivisions" type="text">
+	<button id="button-subdivisions" type="button">OK</button>--><br>
+	Twist Intensity: 
+	
+	<input id="r1" type="radio" name="intensity" value="0.2" onchange="render()" checked>Low
+	<input id="r2" type="radio" name="intensity" value="1" onchange="render()">High
+	<br>
+	Subdivisions: <input id="slider-subdivisions" type="range" min="0" max="7" value="0" step="1"/> <label id="current-subdivision">(0)</label><br>
+	<input id="checkbox-edge" type="checkbox" name="edges">Show Edges
+	<input id="checkbox-twist" type="checkbox" name="edges">Twist
+</form>
+
+
+</body>
+</html>
