@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Hierarchy Robot</title>
+		<script type="text/javascript" src="../Common/MV.js"></script>
+		<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+		<script type="text/javascript" src="../Common/initShaders.js"></script>
+		<script type="text/javascript" src="objectsData.js"></script>
+		<script type="text/javascript" src="ObjectClass.js"></script>
+		<script type="text/javascript" src="robot.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<canvas id="canvas" width="800" height="480"></canvas><br>
+			
+		<table align="center">
+		<tr>
+			<th colspan="2">Rotation Controller</th>
+		</tr>
+		<tr>
+			<th>Key</th>
+			<th>Action</th>
+		</tr>
+		<tr>
+			<td>
+				Left Arrow / Right Arrow
+			</td>
+			<td>
+				Camera
+			</td>
+		</tr>
+		<tr>
+			<td>
+				H
+			</td>
+			<td>
+				Head
+			</td>
+		</tr>
+		<tr>
+			<td>
+				B
+			</td>
+			<td>
+				Body
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Q / W
+			</td>
+			<td>
+				Right Arm
+			</td>
+		</tr>
+		<tr>
+			<td>
+				E / R
+			</td>
+			<td>
+				Left Arm
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A / S
+			</td>
+			<td>
+				Lower Right Arm
+			</td>
+		</tr>
+		<tr>
+			<td>
+				D / F
+			</td>
+			<td>
+				Left Lower Arm
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Z / X
+			</td>
+			<td>
+				Right Hand
+			</td>
+		</tr>
+		<tr>
+			<td>
+				C / V
+			</td>
+			<td>
+				Left Hand
+			</td>
+		</tr>
+
+			
+		</table><br>
+
+		<script id="vertex-shader" type="x-shader/x-vertex">
+			uniform mat4 u_scale;
+			uniform mat4 u_rotation;
+			uniform mat4 u_translation;
+			uniform mat4 u_modelView;
+			uniform mat4 u_projection;
+
+			attribute vec4 a_position;
+			attribute vec4 vColor;
+
+			varying vec4 fColor;
+ 
+			void main()
+			{
+				gl_Position = u_projection * u_modelView * u_translation * u_rotation * u_scale * a_position;
+  				fColor = vColor;
+  			}
+		</script>
+		
+		<script id="fragment-shader" type="x-shader/x-fragment">
+			precision mediump float;
+
+			varying vec4 fColor;
+
+			void main()
+			{
+ 				gl_FragColor = fColor;	
+			}
+		</script>
+	</body>

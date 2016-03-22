@@ -1,0 +1,7 @@
+
+- Rotate with respect to an anchor point:
+http://stackoverflow.com/questions/32282184/how-do-i-rotate-a-geometry-around-a-specific-point
+http://webglfundamentals.org/webgl/lessons/webgl-2d-matrices.html
+
+- Multiple keys pressed at once:
+http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-once
